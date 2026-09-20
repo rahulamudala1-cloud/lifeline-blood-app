@@ -3,7 +3,8 @@ import { supabase } from './supabaseClient';
 
 interface Donor {
   id: number;
-  name: string;
+  name?: string;
+  full_name?: string;
   blood_group: string;
   city: string;
   phone: string;
@@ -123,19 +124,13 @@ export default function App() {
           </select>
         </div>
 
-        {/* Sub-Filter Pills (Free, Ready, Eligible) */}
+        {/* Sub-Filter Pills */}
         <div style={{ display: 'flex', gap: '0.4rem', overflowX: 'auto', paddingBottom: '0.5rem', marginBottom: '0.85rem' }}>
           <button onClick={() => setFilterType('ALL')} style={{ padding: '0.3rem 0.6rem', borderRadius: '999px', border: 'none', backgroundColor: filterType === 'ALL' ? '#0f172a' : '#e2e8f0', color: filterType === 'ALL' ? '#fff' : '#475569', fontSize: '0.75rem', fontWeight: '700', cursor: 'pointer', whiteSpace: 'nowrap' }}>
             🔍 All Donors
           </button>
           <button onClick={() => setFilterType('READY')} style={{ padding: '0.3rem 0.6rem', borderRadius: '999px', border: 'none', backgroundColor: filterType === 'READY' ? '#16a34a' : '#e2e8f0', color: filterType === 'READY' ? '#fff' : '#475569', fontSize: '0.75rem', fontWeight: '700', cursor: 'pointer', whiteSpace: 'nowrap' }}>
             🟢 Ready Now
-          </button>
-          <button onClick={() => alert('Filter: Free Only')} style={{ padding: '0.3rem 0.6rem', borderRadius: '999px', border: 'none', backgroundColor: '#e2e8f0', color: '#475569', fontSize: '0.75rem', fontWeight: '700', cursor: 'pointer', whiteSpace: 'nowrap' }}>
-            💚 Free Only
-          </button>
-          <button onClick={() => alert('Filter: Eligible')} style={{ padding: '0.3rem 0.6rem', borderRadius: '999px', border: 'none', backgroundColor: '#e2e8f0', color: '#475569', fontSize: '0.75rem', fontWeight: '700', cursor: 'pointer', whiteSpace: 'nowrap' }}>
-            ✅ Eligible (90d)
           </button>
         </div>
 
@@ -151,9 +146,12 @@ export default function App() {
             {filteredDonors.map((donor) => (
               <div key={donor.id} style={{ backgroundColor: '#ffffff', padding: '1rem', borderRadius: '0.5rem', border: '1px solid #e2e8f0', boxShadow: '0 1px 2px rgba(0,0,0,0.02)' }}>
                 
+                {/* Donor Name & Blood Group Header */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.3rem' }}>
                   <div>
-                    <span style={{ fontWeight: '800', fontSize: '1rem', color: '#0f172a' }}>{donor.name}</span>
+                    <div style={{ fontWeight: '800', fontSize: '1.05rem', color: '#0f172a' }}>
+                      {donor.name || donor.full_name || 'Unnamed Donor'}
+                    </div>
                     <div style={{ fontSize: '0.75rem', color: '#16a34a', fontWeight: '600', marginTop: '0.1rem' }}>💚 Free | ⭐ 5x</div>
                   </div>
                   <span style={{ backgroundColor: '#dc2626', color: '#ffffff', fontWeight: '800', padding: '0.2rem 0.5rem', borderRadius: '0.3rem', fontSize: '0.8rem' }}>
