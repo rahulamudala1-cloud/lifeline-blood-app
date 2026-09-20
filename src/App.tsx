@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
-// Uses your existing secure environment variables
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
@@ -27,7 +26,6 @@ export default function App() {
     setLoading(false);
   }
 
-  // Filter logic
   const filteredDonors = donors.filter((donor) => {
     const matchesCity = donor.city?.toLowerCase().includes(searchCity.toLowerCase());
     const matchesGroup = selectedBloodGroup === 'ALL' || donor.blood_group === selectedBloodGroup;
@@ -36,8 +34,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-800 font-sans antialiased pb-12">
-      
-      {/* Modern Header */}
       <header className="sticky top-0 z-30 bg-white/85 backdrop-blur-md border-b border-slate-200 px-4 py-4 mb-6 shadow-xs">
         <div className="max-w-md mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-2">
@@ -51,8 +47,6 @@ export default function App() {
       </header>
 
       <main className="max-w-md mx-auto px-4 space-y-4">
-
-        {/* Search & Filter Bar */}
         <div className="bg-white p-3 rounded-2xl shadow-xs border border-slate-100 space-y-3">
           <input
             type="text"
@@ -79,7 +73,6 @@ export default function App() {
           </div>
         </div>
 
-        {/* Donor List Section */}
         {loading ? (
           <div className="text-center py-12 text-sm text-slate-400">Loading directory...</div>
         ) : filteredDonors.length === 0 ? (
@@ -99,13 +92,11 @@ export default function App() {
                     📍 {donor.city}
                   </p>
                 </div>
-                {/* Blood Group Badge */}
                 <span className="bg-rose-50 text-rose-600 font-extrabold text-sm px-3 py-1.5 rounded-xl border border-rose-100 shadow-xs">
                   {donor.blood_group}
                 </span>
               </div>
 
-              {/* Status and Details */}
               <div className="flex items-center gap-2 pt-1">
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-100">
                   🟢 Ready
@@ -114,7 +105,6 @@ export default function App() {
                 <span className="text-xs font-medium text-slate-600">{donor.phone}</span>
               </div>
 
-              {/* Action Buttons */}
               <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-50">
                 <a
                   href={`tel:${donor.phone}`}
@@ -134,8 +124,8 @@ export default function App() {
             </div>
           ))
         )}
-
       </main>
     </div>
   );
+}
 }
