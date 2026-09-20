@@ -32,34 +32,37 @@ export default function App() {
   }
 
   const filteredDonors = donors.filter((donor) => {
-    const matchesCity = donor.city.toLowerCase().includes(searchCity.toLowerCase());
+    const matchesCity = donor.city ? donor.city.toLowerCase().includes(searchCity.toLowerCase()) : false;
     const matchesGroup = selectedBloodGroup === 'ALL' || donor.blood_group === selectedBloodGroup;
     return matchesCity && matchesGroup;
   });
 
   return (
-    <div className="min-h-screen bg-red-50 text-gray-900 pb-12">
-      <header className="bg-red-600 text-white shadow-md py-6 px-4 mb-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-3xl font-bold tracking-wide">Lifeline Blood Directory</h1>
-          <p className="text-red-100 mt-1">Find or list verified blood donors in your area instantly</p>
+    <div style={{ minHeight: '100vh', backgroundColor: '#fff5f5', color: '#111827', paddingBottom: '3rem', fontFamily: 'system-ui, sans-serif' }}>
+      {/* Header */}
+      <header style={{ backgroundColor: '#dc2626', color: '#ffffff', padding: '1.5rem 1rem', marginBottom: '2rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+        <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
+          <h1 style={{ fontSize: '2rem', fontWeight: 'bold', margin: '0 0 0.5rem 0' }}>Lifeline Blood Directory</h1>
+          <p style={{ margin: 0, color: '#fee2e2', fontSize: '0.95rem' }}>Find or list verified blood donors in your area instantly</p>
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4">
-        {/* Search & Filter Section */}
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-red-100 flex flex-col sm:flex-row gap-4 mb-6">
+      {/* Main Content */}
+      <main style={{ maxWidth: '800px', margin: '0 auto', padding: '0 1rem' }}>
+        
+        {/* Filters */}
+        <div style={{ backgroundColor: '#ffffff', padding: '1rem', borderRadius: '0.75rem', border: '1px solid #fee2e2', display: 'flex', gap: '1rem', marginBottom: '1.5rem', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
           <input
             type="text"
             placeholder="Search by city (e.g., Hyderabad)..."
             value={searchCity}
             onChange={(e) => setSearchCity(e.target.value)}
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+            style={{ flex: 1, padding: '0.5rem 0.75rem', border: '1px solid #d1d5db', borderRadius: '0.5rem', fontSize: '0.95rem', outline: 'none' }}
           />
           <select
             value={selectedBloodGroup}
             onChange={(e) => setSelectedBloodGroup(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 bg-white"
+            style={{ padding: '0.5rem 0.75rem', border: '1px solid #d1d5db', borderRadius: '0.5rem', fontSize: '0.95rem', backgroundColor: '#ffffff', outline: 'none' }}
           >
             <option value="ALL">All Blood Groups</option>
             <option value="A+">A+</option>
@@ -73,31 +76,31 @@ export default function App() {
           </select>
         </div>
 
-        {/* Donors List */}
+        {/* List of Donors */}
         {loading ? (
-          <div className="text-center py-12 text-gray-500">Loading donors...</div>
+          <div style={{ textAlign: 'center', padding: '3rem', color: '#6b7280' }}>Loading donors...</div>
         ) : filteredDonors.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-xl border border-gray-100 shadow-sm">
-            <p className="text-gray-500 text-lg">No donors found matching your criteria.</p>
+          <div style={{ textAlign: 'center', padding: '3rem', backgroundColor: '#ffffff', borderRadius: '0.75rem', border: '1px solid #f3f4f6' }}>
+            <p style={{ color: '#6b7280', fontSize: '1.1rem', margin: 0 }}>No donors found matching your criteria.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1rem' }}>
             {filteredDonors.map((donor) => (
-              <div key={donor.id} className="bg-white p-5 rounded-xl shadow-sm border border-red-100 hover:shadow-md transition">
-                <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-lg font-semibold text-gray-800">{donor.name}</h3>
-                  <span className="bg-red-100 text-red-700 font-bold px-3 py-1 rounded-full text-sm">
+              <div key={donor.id} style={{ backgroundColor: '#ffffff', padding: '1.25rem', borderRadius: '0.75rem', border: '1px solid #fee2e2', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
+                  <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: '600', color: '#1f2937' }}>{donor.name}</h3>
+                  <span style={{ backgroundColor: '#fee2e2', color: '#b91c1c', fontWeight: 'bold', padding: '0.2rem 0.6rem', borderRadius: '9999px', fontSize: '0.85rem' }}>
                     {donor.blood_group}
                   </span>
                 </div>
-                <p className="text-gray-600 text-sm mb-3">📍 {donor.city}</p>
-                <div className="flex justify-between items-center mt-4 pt-3 border-t border-gray-100">
-                  <span className={`text-xs font-medium px-2 py-1 rounded ${donor.available ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}`}>
-                    {donor.available ? 'Available' : 'Currently Unavailable'}
+                <p style={{ margin: '0 0 1rem 0', color: '#4b5563', fontSize: '0.9rem' }}>📍 {donor.city}</p>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '0.75rem', borderTop: '1px solid #f3f4f6' }}>
+                  <span style={{ fontSize: '0.8rem', fontWeight: '500', padding: '0.2rem 0.5rem', borderRadius: '0.25rem', backgroundColor: donor.available ? '#dcfce7' : '#f3f4f6', color: donor.available ? '#15803d' : '#4b5563' }}>
+                    {donor.available ? 'Available' : 'Unavailable'}
                   </span>
                   <a
                     href={`tel:${donor.phone}`}
-                    className="bg-red-600 text-white px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-red-700 transition"
+                    style={{ backgroundColor: '#dc2626', color: '#ffffff', padding: '0.4rem 0.9rem', borderRadius: '0.5rem', fontSize: '0.85rem', fontWeight: '500', textDecoration: 'none' }}
                   >
                     Call Donor
                   </a>
